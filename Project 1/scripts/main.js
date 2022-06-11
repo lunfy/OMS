@@ -7,27 +7,29 @@ const postalBtn = document.querySelector('#search-postal');
 const searchName = () => {
     searchContainer.innerHTML = '';
 
-    const latLabel = document.createElement('label');
-    latLabel.setAttribute('for','address-name');
-    latLabel.setAttribute('class','form-label');
-    latLabel.innerText = 'Input address/location name:';
-    searchContainer.append(latLabel);
+    const nameLabel = document.createElement('label');
+    nameLabel.setAttribute('for','address-name');
+    nameLabel.setAttribute('class','form-label');
+    nameLabel.innerText = 'Input address/location name:';
+    searchContainer.append(nameLabel);
 
     const nameDiv = document.createElement('div');
     nameDiv.setAttribute('class','mt-1 mb-1')
     searchContainer.append(nameDiv);
 
-    const latField = document.createElement('textarea');
-    latField.setAttribute('class','form-control');
-    latField.setAttribute('id','address-name');
-    latField.setAttribute('rows','1');
-    nameDiv.append(latField);
+    const nameField = document.createElement('textarea');
+    nameField.setAttribute('class','form-control');
+    nameField.setAttribute('id','address-name');
+    nameField.setAttribute('rows','1');
+    nameDiv.append(nameField);
 
-    const coordSubmitBtn = document.createElement('button');
-    coordSubmitBtn.setAttribute('type','button');
-    coordSubmitBtn.setAttribute('class','btn btn-primary mt-1');
-    coordSubmitBtn.innerText = 'Search';
-    nameDiv.append(coordSubmitBtn);
+    const nameSubmitBtn = document.createElement('button');
+    nameSubmitBtn.setAttribute('type','button');
+    nameSubmitBtn.setAttribute('class','btn btn-primary mt-1');
+    nameSubmitBtn.setAttribute('id','search-button');
+    nameSubmitBtn.setAttribute('onclick','searchAddress()');
+    nameSubmitBtn.innerText = 'Search';
+    nameDiv.append(nameSubmitBtn);
 
 }
 
@@ -50,7 +52,7 @@ const searchLatLong = () => {
     const longLabel = document.createElement('label');
     longLabel.setAttribute('for','address-long');
     longLabel.setAttribute('class','form-label mt-1 mb-1');
-    longLabel.innerText = 'Longtitude:';
+    longLabel.innerText = 'Longitude:';
     searchContainer.append(longLabel);
 
     const longField = document.createElement('textarea');
@@ -64,6 +66,25 @@ const searchLatLong = () => {
     coordSubmitBtn.setAttribute('class','btn btn-primary mt-1');
     coordSubmitBtn.innerText = 'Search';
     searchContainer.append(coordSubmitBtn);
+}
+
+function fetchData(url) {
+    fetch(url)
+     .then((rs) => rs.json())
+     .then(data => {
+        displayData(data)
+    });
+}
+
+function displayData(data) {
+    console.log(data);
+}
+
+function searchAddress() {
+  const searchText = document.querySelector('#address-name').value;
+  const pageNum = 1;
+  const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNum;
+  fetchData(url);
 }
 
 nameBtn.onclick = searchName;

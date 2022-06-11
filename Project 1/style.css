@@ -11,3 +11,8 @@
 .logo {
     margin-right: 1em;
 }
+
+.search-label {
+    display: flex;
+    justify-content: space-between;
+}
