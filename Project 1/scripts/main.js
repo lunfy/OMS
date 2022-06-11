@@ -68,7 +68,7 @@ const searchLatLong = () => {
     searchContainer.append(coordSubmitBtn);
 }
 
-function fetchData(url) {
+const fetchData = (url) => {
     fetch(url)
      .then((rs) => rs.json())
      .then(data => {
@@ -76,15 +76,83 @@ function fetchData(url) {
     });
 }
 
-function displayData(data) {
-    console.log(data);
+const displayData = (data) => {
+  const resultsContainer = document.querySelector('#results-container');
+  const resultsArr = data.results;
+  resultsContainer.innerHTML = '';
+
+  console.log(data);
+
+  generateTables();
+
+  const tBody = document.querySelector('tbody');
+
+  resultsArr.forEach((item,index) => {
+    const newRow = document.createElement('tr');
+    tBody.append(newRow);
+
+    const newTh = document.createElement('th');
+    newTh.setAttribute('scope','row');
+    newTh.innerHTML = index+1;
+    newRow.append(newTh);
+
+    const newTd1 = document.createElement('td');
+    newTd1.innerText = item.BUILDING;
+    newRow.append(newTd1);
+
+    const newTd2 = document.createElement('td');
+    newTd2.innerText = item.ADDRESS;
+    newRow.append(newTd2);
+
+    const newTd3 = document.createElement('td');
+    newTd3.innerText = item.POSTAL;
+    newRow.append(newTd3);
+  });
 }
 
-function searchAddress() {
-  const searchText = document.querySelector('#address-name').value;
+const searchAddress = () => {
+  let searchText = document.querySelector('#address-name').value;
   const pageNum = 1;
   const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNum;
   fetchData(url);
+  document.querySelector('#address-name').value = '';
+}
+
+const generateTables = () => {
+  const resDiv = document.querySelector('#results-container');
+
+  const newTable = document.createElement('table');
+  newTable.setAttribute('class','table table-striped');
+  resDiv.append(newTable);
+
+  const tableHead = document.createElement('thead');
+  newTable.append(tableHead);
+
+  const tableRow = document.createElement('tr');
+  tableHead.append(tableRow);
+
+  const headerCol1 = document.createElement('th');
+  headerCol1.setAttribute('scope','col');
+  headerCol1.innerText = '#';
+  tableRow.append(headerCol1);
+
+  const headerCol2 = document.createElement('th');
+  headerCol2.setAttribute('scope','col');
+  headerCol2.innerText = 'Building Name';
+  tableRow.append(headerCol2);
+
+  const headerCol3 = document.createElement('th');
+  headerCol3.setAttribute('scope','col');
+  headerCol3.innerText = 'Address';
+  tableRow.append(headerCol3);
+
+  const headerCol4 = document.createElement('th');
+  headerCol4.setAttribute('scope','col');
+  headerCol4.innerText = 'Postal Code';
+  tableRow.append(headerCol4);
+
+  const tableBody = document.createElement('tbody');
+  newTable.append(tableBody);
 }
 
 nameBtn.onclick = searchName;

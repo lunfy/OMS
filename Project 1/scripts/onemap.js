@@ -17,15 +17,15 @@ basemap.addTo(map);
 //Default path pointing to marker icon
 L.Icon.Default.imagePath = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/images";
 
-//This function gets the current location and passes it to the showPosition function
-function getLocation() {
+//This function gets the device current location and passes it to the showCurrentPosition function
+const getLocation = () => {
     if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showCurrentPosition);
     } 
 }
 
 //This function generates a marker icon on the location that is passed to it, along with a popup
-function showCurrentPosition(position) {           
+const showCurrentPosition = (position) => {           
     marker = new L.Marker([position.coords.latitude, position.coords.longitude], {bounceOnAdd: false}).addTo(map);             
     const popup = L.popup()
     .setLatLng([position.coords.latitude, position.coords.longitude]) 
@@ -33,17 +33,21 @@ function showCurrentPosition(position) {
     .openOn(map);         
 }
 
-function showPosition(position) {
+const showPosition = (position) => {
     marker = new L.Marker([position.coords.latitude, position.coords.longitude], {bounceOnAdd: false}).addTo(map);
 }
 
-function removeMarkers() {
+const removeMapObjects = () => {
     const markerPane = document.querySelector('.leaflet-marker-pane');
+    const leafletPopup = document.querySelector('.leaflet-popup-pane');
+    const leafletShadow = document.querySelector('.leaflet-shadow-pane');
     markerPane.innerHTML = '';
+    leafletPopup.innerHTML = '';
+    leafletShadow.innerHTML = '';
 }
 
 const getLocationBtn = document.querySelector('#get-location');
 getLocationBtn.onclick = getLocation;
 
 const clearMapBtn = document.querySelector('#clear-map');
-clearMapBtn.onclick = removeMarkers;
+clearMapBtn.onclick = removeMapObjects;
