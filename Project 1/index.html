@@ -1,0 +1,61 @@
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>OneMap2 XYZ (Default)</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+        <link rel="stylesheet" href="./style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <script src="https://cdn.onemap.sg/leaflet/onemap-leaflet.js"></script>
+    </head>
+
+            <body>
+
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg bg-light">
+                        <div class="container-fluid">
+                          <img src="./img/sei-logo.png" class="logo" alt="SEI Logo" width="111" height="78" class="d-inline-block align-text-top">
+                          <span class="title">Ops Monitoring System</span>
+
+                          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                          </button>
+
+                          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                              <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
+                              <a class="nav-link" href="./weather.html">Weather</a>
+                              <a class="nav-link" href="./incidents.html">Incidents</a>
+                              <a class="nav-link" href="./resources.html">Resources</a>
+                            </div>
+                          </div>
+
+                        </div>
+                    </nav>
+                    
+                    <div id="mapdiv" style="height: 600px; position: relative;" class="leafelet-container leaflet-fadenim" tabindex="0"></div>
+
+                    <div id="search-parameters" class="mt-3">
+                        <h4>Search for location by:</h4>
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn btn-outline-primary">Name</button>
+                            <button type="button" class="btn btn-outline-primary">Lat-Long</button>
+                            <button type="button" class="btn btn-outline-primary">Postal Code</button>
+                        </div>
+                    </div>
+
+                    <div id="search-input-container">
+
+                    </div>
+
+                </div>
+
+            </body>
+
+            <script src="./scripts/onemap.js"></script>
+
+          </html>
+  
+        
