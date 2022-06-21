@@ -84,6 +84,7 @@ const displayData = (data) => {
   console.log(data);
 
   generateTables();
+  generatePagination(data);
 
   const tBody = document.querySelector('tbody');
 
@@ -110,12 +111,16 @@ const displayData = (data) => {
   });
 }
 
-const searchAddress = () => {
-  let searchText = document.querySelector('#address-name').value;
-  const pageNum = 1;
-  const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNum;
+const searchAddress = (pg) => {
+  const searchText = document.querySelector('#address-name').value;
+  let pageNumber = '';
+  if (pg === undefined) {
+    pageNumber = 1;
+  } else {
+    pageNumber = pg;
+  }
+  const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNumber;
   fetchData(url);
-  document.querySelector('#address-name').value = '';
 }
 
 const generateTables = () => {
@@ -155,5 +160,74 @@ const generateTables = () => {
   newTable.append(tableBody);
 }
 
+const generatePagination = (data) => {
+  const pageDiv = document.querySelector('#pagination');
+  pageDiv.innerHTML = '';
+  
+  const pageNav = document.createElement('nav');
+  pageNav.setAttribute('id','page-nav');
+  pageNav.setAttribute('area-label','Search results page navigation');
+  pageDiv.append(pageNav);
+
+  const pageUlist = document.createElement('ul');
+  pageUlist.setAttribute('id','page-ul');
+  pageUlist.setAttribute('class','pagination justify-content-center');
+  pageNav.append(pageUlist);
+
+  let pagesArr = [...Array(data.totalNumPages).keys()].length;
+
+  if (pagesArr === 1) {
+    listCreator('page-item','number', 1);
+  } else if (pagesArr <= 20) {
+    listCreator('page-item','number', 1);
+    for (let i=1; i<pagesArr; i++) {
+      listCreator('page-item','number', i+1);
+
+      }
+    } else {
+      listCreator('page-item','prev','Previous');
+      listCreator('page-item','number',1);
+      for (let i=1; i<pagesArr; i++) {
+        listCreator('page-item','number', i+1);
+      if (i === 19) {
+        listCreator('page-item','next','Next');
+        break;
+      }
+    }
+  }
+}
+
+//liClass = 'page-item' or 'page-item disabled'>
+//textInside = 'value for innerHTML'
+const listCreator = (liClass,liId,textInside) => {
+  const pageUlist = document.querySelector('#page-ul');
+  const listItem = document.createElement('li');
+  listItem.setAttribute('id', liId)
+  listItem.setAttribute('class',liClass);
+  listItem.setAttribute('onclick','searchAddress(event.target.innerHTML)')
+  pageUlist.append(listItem);
+
+  const itemAnchor = document.createElement('a');
+  itemAnchor.setAttribute('class','page-link');
+  itemAnchor.innerHTML = textInside;
+  listItem.append(itemAnchor);
+}
+
 nameBtn.onclick = searchName;
 latLongBtn.onclick = searchLatLong;
+
+const prevNextBtn = (liClass,liId,textInside) => {
+  const pageUlist = document.querySelector('#page-ul');
+  const listItem = document.createElement('li');
+  listItem.setAttribute('id', liId)
+  listItem.setAttribute('class',liClass);
+  listItem.setAttribute('onclick','prevNextFn(data)')
+  pageUlist.append(listItem);
+
+  const itemAnchor = document.createElement('a');
+  itemAnchor.setAttribute('class','page-link');
+  itemAnchor.innerHTML = textInside;
+  listItem.append(itemAnchor);
+}
+//next/prev button function
+// click = function takes the pages and dsiplays next 20 in array
