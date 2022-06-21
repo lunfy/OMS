@@ -26,7 +26,7 @@ const getLocation = () => {
 
 //This function generates a marker icon on the location that is passed to it, along with a popup
 const showCurrentPosition = (position) => {           
-    marker = new L.Marker([position.coords.latitude, position.coords.longitude], {bounceOnAdd: false}).addTo(map);             
+    marker = new L.Marker([position.coords.latitude, position.coords.longitude]).addTo(map);             
     const popup = L.popup()
     .setLatLng([position.coords.latitude, position.coords.longitude]) 
     .setContent('You are here!')
@@ -51,3 +51,41 @@ getLocationBtn.onclick = getLocation;
 
 const clearMapBtn = document.querySelector('#clear-map');
 clearMapBtn.onclick = removeMapObjects;
+
+document.addEventListener('click', (el) => {
+    if (el.target && el.target.id === 'search-button' || 'number') {
+        setTimeout(() => {
+            removeMapObjects();
+            const bldgName = document.getElementsByClassName('bldg-name');
+            const latArr = document.getElementsByClassName('latitude');
+            const lonArr = document.getElementsByClassName('longitude');
+            for (let i=0; i<bldgName.length; i++) {
+                marker = new L.Marker([latArr[i].innerText, lonArr[i].innerText], {bounceOnAdd: false}).addTo(map);
+                const popup = L.popup()
+                .setLatLng([latArr[i].innerText, lonArr[i].innerText])
+                .setContent(bldgName[i].innerText);
+                marker.bindPopup(popup);
+            }
+        }, 100);
+        el.stopPropagation();
+    }
+});
+
+// document.addEventListener('click', (el) => {
+//     removeMapObjects;
+//     if (el.target && el.target.id === 'number') {
+//         setTimeout(() => {
+//             const bldgName = document.getElementsByClassName('bldg-name');
+//             const latArr = document.getElementsByClassName('latitude');
+//             const lonArr = document.getElementsByClassName('longitude');
+//             for (let i=0; i<bldgName.length; i++) {
+//                 marker = new L.Marker([latArr[i].innerText, lonArr[i].innerText], {bounceOnAdd: false}).addTo(map);
+//                 const popup = L.popup()
+//                 .setLatLng([latArr[i].innerText, lonArr[i].innerText])
+//                 .setContent(bldgName[i].innerText);
+//                 marker.bindPopup(popup);
+//             }
+//         }, 100);
+//         el.stopPropagation();
+//     }
+// });

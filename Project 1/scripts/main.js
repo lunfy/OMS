@@ -1,7 +1,6 @@
 const searchContainer = document.querySelector('#search-input-container');
 const nameBtn = document.querySelector('#search-name');
 const latLongBtn = document.querySelector('#search-lat-long');
-const postalBtn = document.querySelector('#search-postal');
 
 //This function creates the search label, field and button for searching address by Name
 const searchName = () => {
@@ -68,6 +67,22 @@ const searchLatLong = () => {
     searchContainer.append(coordSubmitBtn);
 }
 
+//This triggers when search button is clicked
+//Ohter nested functions inside trigger in this order:
+//searchAddress > fetchData > displayData > generateTables, generatePagination > listCreator
+const searchAddress = (pg) => {
+  const searchText = document.querySelector('#address-name').value;
+  let pageNumber = '';
+  if (pg === undefined) {
+    pageNumber = 1;
+  } else {
+    pageNumber = pg;
+  }
+  const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNumber;
+  fetchData(url);
+}
+
+//fetches data from API
 const fetchData = (url) => {
     fetch(url)
      .then((rs) => rs.json())
@@ -98,6 +113,7 @@ const displayData = (data) => {
     newRow.append(newTh);
 
     const newTd1 = document.createElement('td');
+    newTd1.setAttribute('class','bldg-name');
     newTd1.innerText = item.BUILDING;
     newRow.append(newTd1);
 
@@ -108,19 +124,19 @@ const displayData = (data) => {
     const newTd3 = document.createElement('td');
     newTd3.innerText = item.POSTAL;
     newRow.append(newTd3);
-  });
-}
 
-const searchAddress = (pg) => {
-  const searchText = document.querySelector('#address-name').value;
-  let pageNumber = '';
-  if (pg === undefined) {
-    pageNumber = 1;
-  } else {
-    pageNumber = pg;
-  }
-  const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNumber;
-  fetchData(url);
+    const hiddenLat = document.createElement('td');
+    hiddenLat.setAttribute('class','latitude')
+    hiddenLat.setAttribute('hidden','true');
+    hiddenLat.innerText = item.LATITUDE;
+    newRow.append(hiddenLat);
+
+    const hiddenLon = document.createElement('td');
+    hiddenLon.setAttribute('class','longitude')
+    hiddenLon.setAttribute('hidden','true');
+    hiddenLon.innerText = item.LONGITUDE;
+    newRow.append(hiddenLon);
+  });
 }
 
 const generateTables = () => {
@@ -134,27 +150,13 @@ const generateTables = () => {
   newTable.append(tableHead);
 
   const tableRow = document.createElement('tr');
+  tableRow.setAttribute('id','tb-row');
   tableHead.append(tableRow);
 
-  const headerCol1 = document.createElement('th');
-  headerCol1.setAttribute('scope','col');
-  headerCol1.innerText = '#';
-  tableRow.append(headerCol1);
-
-  const headerCol2 = document.createElement('th');
-  headerCol2.setAttribute('scope','col');
-  headerCol2.innerText = 'Building Name';
-  tableRow.append(headerCol2);
-
-  const headerCol3 = document.createElement('th');
-  headerCol3.setAttribute('scope','col');
-  headerCol3.innerText = 'Address';
-  tableRow.append(headerCol3);
-
-  const headerCol4 = document.createElement('th');
-  headerCol4.setAttribute('scope','col');
-  headerCol4.innerText = 'Postal Code';
-  tableRow.append(headerCol4);
+  headerColCreator('#');
+  headerColCreator('Building Name');
+  headerColCreator('Address');
+  headerColCreator('Postal Code');
 
   const tableBody = document.createElement('tbody');
   newTable.append(tableBody);
@@ -174,60 +176,44 @@ const generatePagination = (data) => {
   pageUlist.setAttribute('class','pagination justify-content-center');
   pageNav.append(pageUlist);
 
-  let pagesArr = [...Array(data.totalNumPages).keys()].length;
+  let pagesArr = [...Array(data.totalNumPages).keys()];
+  console.log(pagesArr);
 
-  if (pagesArr === 1) {
+  if (pagesArr.length === 1) {
     listCreator('page-item','number', 1);
-  } else if (pagesArr <= 20) {
-    listCreator('page-item','number', 1);
-    for (let i=1; i<pagesArr; i++) {
-      listCreator('page-item','number', i+1);
-
-      }
-    } else {
-      listCreator('page-item','prev','Previous');
-      listCreator('page-item','number',1);
-      for (let i=1; i<pagesArr; i++) {
-        listCreator('page-item','number', i+1);
-      if (i === 19) {
-        listCreator('page-item','next','Next');
-        break;
-      }
+  } else {
+    pagesArr.some(item => {
+      listCreator('page-item','number', item+1);
+      return item === 9;
+    });
     }
-  }
 }
+
+
+nameBtn.onclick = searchName;
+latLongBtn.onclick = searchLatLong;
 
 //liClass = 'page-item' or 'page-item disabled'>
 //textInside = 'value for innerHTML'
 const listCreator = (liClass,liId,textInside) => {
   const pageUlist = document.querySelector('#page-ul');
   const listItem = document.createElement('li');
-  listItem.setAttribute('id', liId)
   listItem.setAttribute('class',liClass);
   listItem.setAttribute('onclick','searchAddress(event.target.innerHTML)')
   pageUlist.append(listItem);
 
   const itemAnchor = document.createElement('a');
   itemAnchor.setAttribute('class','page-link');
+  itemAnchor.setAttribute('id', liId)
   itemAnchor.innerHTML = textInside;
   listItem.append(itemAnchor);
 }
 
-nameBtn.onclick = searchName;
-latLongBtn.onclick = searchLatLong;
-
-const prevNextBtn = (liClass,liId,textInside) => {
-  const pageUlist = document.querySelector('#page-ul');
-  const listItem = document.createElement('li');
-  listItem.setAttribute('id', liId)
-  listItem.setAttribute('class',liClass);
-  listItem.setAttribute('onclick','prevNextFn(data)')
-  pageUlist.append(listItem);
-
-  const itemAnchor = document.createElement('a');
-  itemAnchor.setAttribute('class','page-link');
-  itemAnchor.innerHTML = textInside;
-  listItem.append(itemAnchor);
+//title = 'string for header title'
+const headerColCreator = (title) => {
+  const tableRow = document.querySelector('#tb-row');
+  const headerCol = document.createElement('th');
+  headerCol.setAttribute('scope','col');
+  headerCol.innerText = title;
+  tableRow.append(headerCol);
 }
-//next/prev button function
-// click = function takes the pages and dsiplays next 20 in array
