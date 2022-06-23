@@ -28,9 +28,8 @@ const getLocation = () => {
 const showCurrentPosition = (position) => {           
     marker = new L.Marker([position.coords.latitude, position.coords.longitude]).addTo(map);             
     const popup = L.popup()
-    .setLatLng([position.coords.latitude, position.coords.longitude]) 
     .setContent('You are here!')
-    .openOn(map);         
+    marker.bindPopup(popup);     
 }
 
 const showPosition = (position) => {
@@ -53,7 +52,7 @@ const clearMapBtn = document.querySelector('#clear-map');
 clearMapBtn.onclick = removeMapObjects;
 
 document.addEventListener('click', (el) => {
-    if (el.target && el.target.id === 'search-button' || 'number') {
+    if (el.target && (el.target.id === 'search-button' || el.target.id === 'number')) {
         setTimeout(() => {
             removeMapObjects();
             const bldgName = document.getElementsByClassName('bldg-name');
@@ -66,26 +65,7 @@ document.addEventListener('click', (el) => {
                 .setContent(bldgName[i].innerText);
                 marker.bindPopup(popup);
             }
-        }, 100);
+        }, 500);
         el.stopPropagation();
     }
 });
-
-// document.addEventListener('click', (el) => {
-//     removeMapObjects;
-//     if (el.target && el.target.id === 'number') {
-//         setTimeout(() => {
-//             const bldgName = document.getElementsByClassName('bldg-name');
-//             const latArr = document.getElementsByClassName('latitude');
-//             const lonArr = document.getElementsByClassName('longitude');
-//             for (let i=0; i<bldgName.length; i++) {
-//                 marker = new L.Marker([latArr[i].innerText, lonArr[i].innerText], {bounceOnAdd: false}).addTo(map);
-//                 const popup = L.popup()
-//                 .setLatLng([latArr[i].innerText, lonArr[i].innerText])
-//                 .setContent(bldgName[i].innerText);
-//                 marker.bindPopup(popup);
-//             }
-//         }, 100);
-//         el.stopPropagation();
-//     }
-// });
