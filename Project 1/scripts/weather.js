@@ -12,3 +12,4 @@ const getTodayForecast = () => {
       });
   }
 
+  document.addEventListener("load", getTodayForecast());
