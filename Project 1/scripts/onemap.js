@@ -1,5 +1,9 @@
 const center = L.bounds([1.56073, 104.11475], [1.16, 103.502]).getCenter();
-const map = L.map('mapdiv').setView([center.x, center.y], 12);
+const forecastL = L.layerGroup();
+
+const map = L.map('mapdiv', {
+    layers: [forecastL]
+}).setView([center.x, center.y], 12);
 
 const weatherIcon = L.Icon.extend({
     options: {
@@ -7,7 +11,11 @@ const weatherIcon = L.Icon.extend({
     }
 });
 
+const layerControl = L.control.layers().addTo(map);
+layerControl.addOverlay(forecastL, 'Current Forecast');
+
 const cloudyIcon = new weatherIcon({iconUrl: './img/cloudy.png'});
+const pCloudyIcon = new weatherIcon({iconUrl: './img/partlycloudy.png'});
 const rainyIcon = new weatherIcon({iconUrl: './img/rainy.png'});
 const sunnyIcon = new weatherIcon({iconUrl: './img/sunny.png'});
 
@@ -70,15 +78,31 @@ const mapForecast = (url) => {
             const locationInfo = data.area_metadata;
             const locationStatus = data.items[0].forecasts
             locationInfo.forEach((item,index) => {
-                if (locationStatus[index].forecast === 'Cloudy') {
-                    marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: cloudyIcon}).addTo(map);
-                    marker.bindPopup('<center>'+item.name+'<br>'+'Cloudy</center>');
-                } else if (locationStatus[index].forecast === 'Rainy') {
-                    marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: rainyIcon}).addTo(map);
-                    marker.bindPopup('<center>'+item.name+'<br>'+'Rainy</center>');
-                } else if (locationStatus[index].forecast === 'Sunny') {
-                    marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: sunnyIcon}).addTo(map);
-                    marker.bindPopup('<center>'+item.name+'<br>'+'Sunny</center>');
+                switch (locationStatus[index].forecast) {
+                    case 'Sunny':
+                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: sunnyIcon}).addTo(forecastL);
+                        marker.bindPopup('<center>'+item.name+'<br>'+'Sunny</center>');
+                        break;
+                    case 'Cloudy':
+                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: cloudyIcon}).addTo(forecastL);
+                        marker.bindPopup('<center>'+item.name+'<br>'+'Cloudy</center>');
+                        break;
+                    case 'Partly Cloudy (Day)':
+                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: pCloudyIcon}).addTo(forecastL);
+                        marker.bindPopup('<center>'+item.name+'<br>'+'Partly Cloudy (Day)</center>');
+                        break;
+                    case 'Light Rain':
+                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: rainyIcon}).addTo(forecastL);
+                        marker.bindPopup('<center>'+item.name+'<br>'+'Light Rain</center>');
+                        break;
+                    case 'Moderate Rain':
+                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: rainyIcon}).addTo(forecastL);
+                        marker.bindPopup('<center>'+item.name+'<br>'+'Moderate Rain</center>');
+                        break;
+                    case 'Showers':
+                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: rainyIcon}).addTo(forecastL);
+                        marker.bindPopup('<center>'+item.name+'<br>'+'Showers</center>');
+                        break;
                 }
             })
     });
@@ -105,4 +129,8 @@ document.addEventListener('click', (el) => {
 
 if (window.location.href.match('weather.html') !=null) {
     mapForecast('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast');
+}
+
+if (window.location.href.match('index.html') !=null) {
+    layerControl.removeFrom(map);
 }

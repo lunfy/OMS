@@ -1,6 +1,6 @@
-const searchContainer = document.querySelector('#search-input-container');
-const nameBtn = document.querySelector('#search-name');
-const latLongBtn = document.querySelector('#search-lat-long');
+const searchContainer = document.querySelector('#search-input-container'),
+      nameBtn = document.querySelector('#search-name'),
+      latLongBtn = document.querySelector('#search-lat-long');
 
 //This function creates the search label, field and button for searching address by Name
 const searchName = () => {
@@ -24,12 +24,15 @@ const searchName = () => {
 
     const nameSubmitBtn = document.createElement('button');
     nameSubmitBtn.setAttribute('type','button');
-    nameSubmitBtn.setAttribute('class','btn btn-primary mt-1');
+    nameSubmitBtn.setAttribute('class','btn btn-primary mt-2');
     nameSubmitBtn.setAttribute('id','search-button');
     nameSubmitBtn.setAttribute('onclick','searchAddress()');
     nameSubmitBtn.innerText = 'Search';
     nameDiv.append(nameSubmitBtn);
 
+    setTimeout(() => {
+      window.scrollTo(0,document.body.scrollHeight)
+    },100);
 }
 
 //This function creates the search label, field and button for searching address by Lat-Long
@@ -80,6 +83,10 @@ const searchAddress = (pg) => {
   }
   const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNumber;
   fetchData(url);
+  
+  setTimeout(() => {
+    window.scrollTo(0,document.body.scrollHeight)
+  },100);
 }
 
 //fetches data from API
