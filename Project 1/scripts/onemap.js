@@ -1,18 +1,38 @@
+// let unix_timestamp = 1656404006
+// // Create a new JavaScript Date object based on the timestamp
+// // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+// var date = new Date(unix_timestamp * 1000);
+// // Hours part from the timestamp
+// var hours = date.getHours();
+// // Minutes part from the timestamp
+// var minutes = "0" + date.getMinutes();
+// // Seconds part from the timestamp
+// var seconds = "0" + date.getSeconds();
+
+// // Will display time in 10:30:23 format
+// var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+// console.log(date+' '+formattedTime);
+
 const center = L.bounds([1.56073, 104.11475], [1.16, 103.502]).getCenter();
 const forecastL = L.layerGroup();
+const onIncidentL = L.layerGroup();
+const offIncidentL = L.layerGroup();
 
 const map = L.map('mapdiv', {
-    layers: [forecastL]
+    layers: [forecastL,onIncidentL,offIncidentL]
 }).setView([center.x, center.y], 12);
+
+const layerControl = L.control.layers().addTo(map);
+layerControl.addOverlay(forecastL, 'Current Forecast');
+layerControl.addOverlay(onIncidentL, 'Ongoing Incidents');
+layerControl.addOverlay(offIncidentL, 'Resolved Incidents');
 
 const weatherIcon = L.Icon.extend({
     options: {
         iconSize:       [40, 40],
     }
 });
-
-const layerControl = L.control.layers().addTo(map);
-layerControl.addOverlay(forecastL, 'Current Forecast');
 
 const cloudyIcon = new weatherIcon({iconUrl: './img/cloudy.png'});
 const pCloudyIcon = new weatherIcon({iconUrl: './img/partlycloudy.png'});
@@ -21,7 +41,6 @@ const sunnyIcon = new weatherIcon({iconUrl: './img/sunny.png'});
 
 //Default path pointing to marker icon if icons not stated
 L.Icon.Default.imagePath = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/images";
-
 
 //Setting basemap design to follow onemap's prepared theme
 const basemap = L.tileLayer('https://maps-{s}.onemap.sg/v3/Night/{z}/{x}/{y}.png', {
@@ -78,34 +97,35 @@ const mapForecast = (url) => {
             const locationInfo = data.area_metadata;
             const locationStatus = data.items[0].forecasts
             locationInfo.forEach((item,index) => {
+                let lat = item.label_location.latitude;
+                let lon = item.label_location.longitude;
                 switch (locationStatus[index].forecast) {
                     case 'Sunny':
-                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: sunnyIcon}).addTo(forecastL);
-                        marker.bindPopup('<center>'+item.name+'<br>'+'Sunny</center>');
+                        weatherMarker(lat,lon,item.name,sunnyIcon,'Sunny');
                         break;
                     case 'Cloudy':
-                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: cloudyIcon}).addTo(forecastL);
-                        marker.bindPopup('<center>'+item.name+'<br>'+'Cloudy</center>');
+                        weatherMarker(lat,lon,item.name,cloudyIcon,'Cloudy');
                         break;
                     case 'Partly Cloudy (Day)':
-                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: pCloudyIcon}).addTo(forecastL);
-                        marker.bindPopup('<center>'+item.name+'<br>'+'Partly Cloudy (Day)</center>');
+                        weatherMarker(lat,lon,item.name,pCloudyIcon,'Partly Cloudy (Day)');
                         break;
                     case 'Light Rain':
-                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: rainyIcon}).addTo(forecastL);
-                        marker.bindPopup('<center>'+item.name+'<br>'+'Light Rain</center>');
+                        weatherMarker(lat,lon,item.name,rainyIcon,'Light Rain');
                         break;
                     case 'Moderate Rain':
-                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: rainyIcon}).addTo(forecastL);
-                        marker.bindPopup('<center>'+item.name+'<br>'+'Moderate Rain</center>');
+                        weatherMarker(lat,lon,item.name,rainyIcon,'Moderate Rain');
                         break;
                     case 'Showers':
-                        marker = new L.Marker([item.label_location.latitude, item.label_location.longitude], {icon: rainyIcon}).addTo(forecastL);
-                        marker.bindPopup('<center>'+item.name+'<br>'+'Showers</center>');
+                        weatherMarker(lat,lon,item.name,rainyIcon,'Showers');
                         break;
                 }
             })
     });
+}
+
+const weatherMarker = (lat,long,name,wIcon,forecasted) => {
+    marker = new L.Marker([lat, long], {icon: wIcon}).addTo(forecastL);
+    marker.bindPopup('<center>'+name+'<br>'+forecasted+'</center>');
 }
 
 document.addEventListener('click', (el) => {
@@ -129,8 +149,10 @@ document.addEventListener('click', (el) => {
 
 if (window.location.href.match('weather.html') !=null) {
     mapForecast('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast');
-}
-
-if (window.location.href.match('index.html') !=null) {
+    layerControl.removeLayer(onIncidentL);
+    layerControl.removeLayer(offIncidentL);
+} else if (window.location.href.match('index.html') !=null) {
     layerControl.removeFrom(map);
+} else if (window.location.href.match('incidents.html') !=null) {
+    layerControl.removeLayer(forecastL);
 }

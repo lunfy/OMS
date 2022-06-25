@@ -16,3 +16,15 @@
     display: flex;
     justify-content: space-between;
 }
+
+#rb {
+    margin-top: -1em;
+}
+
+#it {
+    margin-top: -1em;
+}
+
+#sb {
+    margin-top: 3em;
+}

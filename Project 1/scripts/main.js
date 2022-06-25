@@ -68,6 +68,10 @@ const searchLatLong = () => {
     coordSubmitBtn.setAttribute('class','btn btn-primary mt-1');
     coordSubmitBtn.innerText = 'Search';
     searchContainer.append(coordSubmitBtn);
+
+    setTimeout(() => {
+      window.scrollTo(0,document.body.scrollHeight)
+    },100);
 }
 
 //This triggers when search button is clicked
@@ -83,7 +87,17 @@ const searchAddress = (pg) => {
   }
   const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNumber;
   fetchData(url);
-  
+
+  setTimeout(() => {
+    window.scrollTo(0,document.body.scrollHeight)
+  },100);
+}
+
+const searchCoord = () => {
+  const searchText = document.querySelector('#address-name').value;
+  const url = 'https://developers.onemap.sg/commonapi/search?searchVal='+searchText+'&returnGeom=Y&getAddrDetails=Y&pageNum='+pageNumber;
+  fetchData(url);
+
   setTimeout(() => {
     window.scrollTo(0,document.body.scrollHeight)
   },100);
