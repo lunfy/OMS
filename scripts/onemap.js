@@ -38,6 +38,7 @@ const cloudyIcon = new weatherIcon({iconUrl: './img/cloudy.png'});
 const pCloudyIcon = new weatherIcon({iconUrl: './img/partlycloudy.png'});
 const rainyIcon = new weatherIcon({iconUrl: './img/rainy.png'});
 const sunnyIcon = new weatherIcon({iconUrl: './img/sunny.png'});
+const thunderyIcon = new weatherIcon({iconUrl: './img/thunderyshowers.png'});
 
 //Default path pointing to marker icon if icons not stated
 L.Icon.Default.imagePath = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/images";
@@ -118,6 +119,9 @@ const mapForecast = (url) => {
                     case 'Showers':
                         weatherMarker(lat,lon,item.name,rainyIcon,'Showers');
                         break;
+                    case 'Thundery Showers':
+                        weatherMarker(lat,lon,item.name,thunderyIcon,'Thundery Showers');
+                    break;
                 }
             })
     });

@@ -1,6 +1,7 @@
 const searchContainer = document.querySelector('#search-input-container'),
       nameBtn = document.querySelector('#search-name'),
-      latLongBtn = document.querySelector('#search-lat-long');
+      latLongBtn = document.querySelector('#search-lat-long'),
+      resultsContainer = document.querySelector('#results-container');
 
 //This function creates the search label, field and button for searching address by Name
 const searchName = () => {
@@ -38,6 +39,7 @@ const searchName = () => {
 //This function creates the search label, field and button for searching address by Lat-Long
 const searchLatLong = () => {
     searchContainer.innerHTML = '';
+    resultsContainer.innerHTML = '';
 
     const latLabel = document.createElement('label');
     latLabel.setAttribute('for','address-lat');
@@ -113,7 +115,6 @@ const fetchData = (url) => {
 }
 
 const displayData = (data) => {
-  const resultsContainer = document.querySelector('#results-container');
   const resultsArr = data.results;
   resultsContainer.innerHTML = '';
 
