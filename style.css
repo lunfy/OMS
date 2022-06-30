@@ -12,6 +12,10 @@
     margin-right: 1em;
 }
 
+#navBarNavAltMarkup {
+    justify-content: end;
+}
+
 .search-label {
     display: flex;
     justify-content: space-between;

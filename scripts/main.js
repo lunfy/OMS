@@ -1,7 +1,8 @@
-const searchContainer = document.querySelector('#search-input-container'),
-      nameBtn = document.querySelector('#search-name'),
-      latLongBtn = document.querySelector('#search-lat-long'),
-      resultsContainer = document.querySelector('#results-container');
+const searchContainer = document.querySelector('#search-input-container');
+const nameBtn = document.querySelector('#search-name');
+const latLongBtn = document.querySelector('#search-lat-long');
+const resultsContainer = document.querySelector('#results-container');
+const pageDiv = document.querySelector('#pagination');
 
 //This function creates the search label, field and button for searching address by Name
 const searchName = () => {
@@ -40,6 +41,7 @@ const searchName = () => {
 const searchLatLong = () => {
     searchContainer.innerHTML = '';
     resultsContainer.innerHTML = '';
+    pageDiv.innerHTML = '';
 
     const latLabel = document.createElement('label');
     latLabel.setAttribute('for','address-lat');
@@ -106,19 +108,15 @@ const searchCoord = () => {
 }
 
 //fetches data from API
-const fetchData = (url) => {
-    fetch(url)
-     .then((rs) => rs.json())
-     .then(data => {
-        displayData(data)
-    });
+const fetchData = async (url) => {
+  const response = await fetch(url);
+  const data = await response.json();
+  displayData(data);
 }
 
 const displayData = (data) => {
   const resultsArr = data.results;
   resultsContainer.innerHTML = '';
-
-  console.log(data);
 
   generateTables();
   generatePagination(data);
@@ -185,7 +183,6 @@ const generateTables = () => {
 }
 
 const generatePagination = (data) => {
-  const pageDiv = document.querySelector('#pagination');
   pageDiv.innerHTML = '';
   
   const pageNav = document.createElement('nav');
@@ -199,7 +196,6 @@ const generatePagination = (data) => {
   pageNav.append(pageUlist);
 
   let pagesArr = [...Array(data.totalNumPages).keys()];
-  console.log(pagesArr);
 
   if (pagesArr.length === 1) {
     listCreator('page-item','number', 1);
