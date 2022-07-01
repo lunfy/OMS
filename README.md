@@ -6,7 +6,7 @@ https://lunfy.github.io/OMS/index.html
 
 <br>
 
-# 2. Build With
+# 2. Built With
 - HTML
 - CSS (Local, Bootstrap, OneMap-leafletjs
 - Javascript (Local, Bootstrap, OneMap-leafletjs
@@ -52,10 +52,17 @@ https://lunfy.github.io/OMS/index.html
 
 # 4. Challenges
 - Unable to implement Previous, Next buttons for dynamic pagination beyond set 20 pages (got stuck for 1 day)
-- 
-
-
+- Writing and repeating code that could be refactored
 
 <br>
 
 # 5. Things I Would Like to Improve On
+- Implement Next and Previous for dynamic pagination
+- Light/Dark mode theme changes
+- More baselayers for OneMap to switch to (Light, Street, Sattelite)
+- More weather data that can be toggled on/off on weather page
+- Incident location marking with custom icons
+- Complete resource management page
+- Make it mobile-responsive
+- Use a database instead of localStorage
+- Refactor alot of code
