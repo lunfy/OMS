@@ -140,6 +140,7 @@ const generateIncTables = () => {
         const removeBtn = document.createElement('button');
         removeBtn.setAttribute('type','button');
         removeBtn.setAttribute('class','btn btn-danger')
+        removeBtn.setAttribute('onclick',`removeCase(${i+1})`)
         removeBtn.innerHTML = 'Remove';
 
 
@@ -168,6 +169,11 @@ const editCase = (i) => {
         case "Closed":
             modalClosed2.checked = true;
     }
+}
+
+const removeCase = (i) => {
+    window.localStorage.removeItem(`case${i}`);
+    displayCase();
 }
 
 const headerColCreator = (title) => {

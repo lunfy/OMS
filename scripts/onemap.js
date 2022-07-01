@@ -39,6 +39,7 @@ const pCloudyIcon = new weatherIcon({iconUrl: './img/partlycloudy.png'});
 const rainyIcon = new weatherIcon({iconUrl: './img/rainy.png'});
 const sunnyIcon = new weatherIcon({iconUrl: './img/sunny.png'});
 const thunderyIcon = new weatherIcon({iconUrl: './img/thunderyshowers.png'});
+const fairandwarmIcon = new weatherIcon({iconUrl: './img/fairandwarm.png'});
 
 //Default path pointing to marker icon if icons not stated
 L.Icon.Default.imagePath = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/images";
@@ -103,6 +104,9 @@ const mapForecast = (url) => {
                 switch (locationStatus[index].forecast) {
                     case 'Sunny':
                         weatherMarker(lat,lon,item.name,sunnyIcon,'Sunny');
+                        break;
+                    case 'Fair & Warm':
+                        weatherMarker(lat,lon,item.name,fairandwarmIcon,'Fair & Warm');
                         break;
                     case 'Cloudy':
                         weatherMarker(lat,lon,item.name,cloudyIcon,'Cloudy');
