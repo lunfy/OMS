@@ -35,8 +35,6 @@
 
                 </div>
             </nav>
-            
-            <marquee id="marquee" width="100%" direction="left" height="30px" scrollamount="10"></marquee>
 
             <div id="mapdiv" style="height: 600px; position: relative;" class="leafelet-container leaflet-fadenim" tabindex="0"></div>
 
@@ -46,7 +44,7 @@
               <button type="button" id="get-location" class="btn btn-success">Get Current Location</button>
             </div>
 
-            <!-- Modal -->
+            <!-- New Incident Modal -->
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -130,6 +128,96 @@
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" id="create-incident" class="btn btn-primary" data-bs-dismiss="modal">Create Incident</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Edit Incident Modal -->
+            <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel2">Create New Incident</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+
+                  <div class="modal-body">
+
+                    <form class="row g-3">
+
+                      <div class="col-md-3">
+                        <label for="incident-date2" class="pb-2">Date of Incident</label>
+                        <input type="date" class="form-control" id="incident-date2" disabled readonly>
+                      </div>
+
+                      <div class="col-md-3">
+                        <label for="case-id2" class="form-label">Case No.</label>
+                        <input type="text" class="form-control" id="case-id2" aria-label="Disabled input example" disabled readonly>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Status</label>
+
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flex-radio-open2" value="Open">
+                          <label class="form-check-label" for="flex-radio-open2">
+                            Open
+                          </label>
+                        </div>
+
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flex-radio-ip2" value="In-Progress">
+                          <label class="form-check-label" for="flex-radio-ip2">
+                            In-Progress
+                          </label>
+                        </div>
+
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flex-radio-close2" value="Closed">
+                          <label class="form-check-label" for="flex-radio-close2">
+                            Closed
+                          </label>
+                        </div>
+
+                        <div id="status-id2" hidden="true"></div>
+
+                      </div>
+
+                      <div class="col-md-3" id="rb">
+                        <label for="report-by2" class="form-label">Reported By</label>
+                        <input type="text" class="form-control" id="report-by2" disabled readonly>
+                      </div>
+
+                      <div class="col-md-2" id="it">
+                        <label class="form-label">Incident Type</label>
+                        <select id="type-select2" class="form-select" aria-label="Incident type selection" disabled readonly>
+                          <option value="Medical">Medical</option>
+                          <option value="Fault-Reporting">Fault-Reporting</option>
+                          <option value="Others">Others</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-9">
+                        <label for="inputAddress22" class="form-label">Address</label>
+                        <input type="text" list="address-range" class="form-control" id="inputAddress22" placeholder="Type address and click enter for search function..." disabled readonly>
+                        <datalist id="address-range">
+                        </datalist>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="inputAddress222" class="form-label">Exact Location</label>
+                        <input type="text" class="form-control" id="inputAddress222" placeholder="Apartment, studio, floor or description" disabled readonly>
+                      </div>
+
+                    </form>
+
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="create-incident2" class="btn btn-primary" data-bs-dismiss="modal">Incident Log</button>
                   </div>
 
                 </div>

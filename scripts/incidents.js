@@ -12,6 +12,16 @@ const modalReported = document.querySelector('#report-by');
 const modalIncType = document.querySelector('#type-select');
 const modalAddress = document.querySelector('#inputAddress');
 const modalXAddress = document.querySelector('#inputAddress2');
+const modalDate2 = document.querySelector('#incident-date2');
+const modalCaseId2 = document.querySelector('#case-id2');
+const modalStatus2 = document.querySelector('#status-id2');
+const modalOpen2 = document.querySelector('#flex-radio-open2');
+const modalInProgress2 = document.querySelector('#flex-radio-ip2');
+const modalClosed2 = document.querySelector('#flex-radio-close2');
+const modalReported2 = document.querySelector('#report-by2');
+const modalIncType2 = document.querySelector('#type-select2');
+const modalAddress2 = document.querySelector('#inputAddress22');
+const modalXAddress2 = document.querySelector('#inputAddress222');
 
 const searchAddress = async (searchText) => {
 	const response = await fetch(
@@ -91,6 +101,8 @@ const generateIncTables = () => {
     headerColCreator('Case No.');
     headerColCreator('Type');
     headerColCreator('Status');
+    headerColCreator('');
+    headerColCreator('');
   
     const tableBody = document.createElement('tbody');
     newTable.append(tableBody);
@@ -106,6 +118,7 @@ const generateIncTables = () => {
         tBody.append(newRow);
         const newTh = document.createElement('th');
         newTh.setAttribute('scope','row');
+        newTh.setAttribute('class','item-td')
         newTh.innerHTML = i+1;
         newRow.append(newTh);
 
@@ -113,8 +126,49 @@ const generateIncTables = () => {
         tableItemCreator(newRow,'caseId',i);
         tableItemCreator(newRow,'caseType',i);
         tableItemCreator(newRow,'caseStatus',i);
+
+        const newTd = document.createElement('td');
+        const editBtn = document.createElement('button');
+        editBtn.setAttribute('type','button');
+        editBtn.setAttribute('class','btn btn-primary')
+        editBtn.setAttribute('data-bs-toggle','modal');
+        editBtn.setAttribute('data-bs-target','#staticBackdrop2');
+        editBtn.setAttribute('onclick',`editCase(${i})`)
+        editBtn.innerHTML = 'Edit';
+
+        const newTd2 = document.createElement('td');
+        const removeBtn = document.createElement('button');
+        removeBtn.setAttribute('type','button');
+        removeBtn.setAttribute('class','btn btn-danger')
+        removeBtn.innerHTML = 'Remove';
+
+
+        newTd.append(editBtn);
+        newTd2.append(removeBtn);
+        newRow.append(newTd);
+        newRow.append(newTd2);
     }
   }
+
+const editCase = (i) => {
+    modalDate2.value = JSON.parse(window.localStorage.getItem(window.localStorage.key(i))).date;
+    modalCaseId2.value = JSON.parse(window.localStorage.getItem(window.localStorage.key(i))).caseId;
+    modalStatus2.innerHTML = JSON.parse(window.localStorage.getItem(window.localStorage.key(i))).caseStatus;
+    modalReported2.value = JSON.parse(window.localStorage.getItem(window.localStorage.key(i))).reporter;
+    modalAddress2.value = JSON.parse(window.localStorage.getItem(window.localStorage.key(i))).address;
+    modalXAddress2.value = JSON.parse(window.localStorage.getItem(window.localStorage.key(i))).xAddress;
+
+    switch (modalStatus2.innerHTML) {
+        case "Open":
+            modalOpen2.checked = true;
+            break;
+        case "In-Progress":
+            modalInProgress2.checked = true;
+            break;
+        case "Closed":
+            modalClosed2.checked = true;
+    }
+}
 
 const headerColCreator = (title) => {
     const tableRow = document.querySelector('#tb-row');
@@ -126,7 +180,8 @@ const headerColCreator = (title) => {
 
 const tableItemCreator = (row,val,index) => {
     const newTd = document.createElement('td');
-    newTd.innerText = JSON.parse(window.localStorage.getItem(window.localStorage.key(index)))[''+val];
+    newTd.setAttribute('class','item-td');
+    newTd.innerText = JSON.parse(window.localStorage.getItem(window.localStorage.key(index)))[val];
     row.append(newTd);
 }
 
