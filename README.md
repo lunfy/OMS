@@ -53,6 +53,7 @@ https://lunfy.github.io/OMS/index.html
 # 4. Challenges
 - Unable to implement Previous, Next buttons for dynamic pagination beyond set 20 pages (got stuck for 1 day)
 - Writing and repeating code that could be refactored
+- Reading the leafletjs documentation. Eventually realized they had tutorials which were really helpful in figuring out the syntax and structure
 
 <br>
 
