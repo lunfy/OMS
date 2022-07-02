@@ -66,6 +66,8 @@ https://lunfy.github.io/OMS/index.html
 - Complete resource management page
 - Make it mobile-responsive
 - Use a database instead of localStorage
+- Use advanced functions from OneMap with POST requests and authentication service
+  - Destination routing, map object themes (schools, food centres, etc)
 - Refactor alot of code
 - Consistency with how I write code (switched styles midway but did not change the previous ones)
-  - Example: Using .then, async/await, onclick vs eventlistener vs setAttribute(click,gn)...
+  - Example: Using .then, async/await, onclick vs eventlistener vs setAttribute(click,fn)...
