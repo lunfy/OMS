@@ -127,6 +127,9 @@ const mapForecast = (url) => {
                     case 'Showers':
                         weatherMarker(lat,lon,item.name,rainyIcon,'Showers');
                         break;
+                    case 'Light Showers':
+                        weatherMarker(lat,lon,item.name,rainyIcon,'Light Showers');
+                        break;
                     case 'Thundery Showers':
                         weatherMarker(lat,lon,item.name,thunderyIcon,'Thundery Showers');
                     break;
