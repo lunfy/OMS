@@ -1,4 +1,9 @@
-# 1. Project 1 : Operations Monitoring System
+# 1. Project 1 : Operations Monitoring System (OMS)
+The OMS is a webapp for companies to manage their operations with features such as:
+- Address Search
+- Location Services
+- Real-time weather data
+- Incident logging and tracking
 
 
 ## Link to access:
