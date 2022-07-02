@@ -67,3 +67,5 @@ https://lunfy.github.io/OMS/index.html
 - Make it mobile-responsive
 - Use a database instead of localStorage
 - Refactor alot of code
+- Consistency with how I write code (switched styles midway but did not change the previous ones)
+  - Example: Using .then, async/await, onclick vs eventlistener vs setAttribute(click,gn)...
