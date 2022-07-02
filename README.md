@@ -57,7 +57,7 @@ https://lunfy.github.io/OMS/index.html
 
 <br>
 
-# 5. Things I Would Like to Improve On
+# 5. Things I Would Like to Improve On/Implement with more time
 - Implement Next and Previous for dynamic pagination
 - Light/Dark mode theme changes
 - More baselayers for OneMap to switch to (Light, Street, Sattelite)
